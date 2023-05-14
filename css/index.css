@@ -80,7 +80,7 @@ body {
     justify-content: center;
 }
 
-#pages p, a {
+#pages span, a {
     margin: 0; padding: 0; border: 0;
     font-size: var(--font-size);
     line-height: calc(var(--font-size) * 0.8);
