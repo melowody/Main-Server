@@ -36,7 +36,11 @@ body {
     }
 
     #pages {
-        width: 50%;
+        width: 45%;
+    }
+    
+    #external {
+        width: 45%;
     }
 
     #subtitle {
@@ -92,4 +96,16 @@ body {
     display: flex;
     justify-content: space-around;
     align-items: center;
+}
+
+#theme-switch {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+#theme-switch svg {
+    cursor: pointer;
+    height: 100%;
+    width: auto;
 }
