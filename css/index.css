@@ -84,7 +84,6 @@ body {
     margin: 0; padding: 0; border: 0;
     font-size: var(--font-size);
     line-height: calc(var(--font-size) * 0.8);
-    color: #777;
     text-decoration: none;
 }
 
@@ -93,8 +92,4 @@ body {
     display: flex;
     justify-content: space-around;
     align-items: center;
-}
-
-#external svg {
-    fill: #777;
 }

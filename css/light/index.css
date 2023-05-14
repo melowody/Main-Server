@@ -1,0 +1,7 @@
+#pages span, a {
+    color: #777;
+}
+
+#external svg {
+    fill: #777;
+}
