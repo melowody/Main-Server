@@ -27,10 +27,90 @@ function setSheet() {
     $("#theme-switch svg").html(path);
 }
 
+async function animAbout() {
+    let currTitleHeight = parseInt(window.getComputedStyle(document.documentElement).getPropertyValue("--title-size-large"))*4/3*.8;
+    let FPS = 10;
+    var timeStep = 0;
+
+    let anim2 = () => {
+        let titleAnimLen = 500;
+        timeStep = 0;
+        $("#about-bg").css({"display": 'inline'});
+        $("#title").css("height", "0px");
+
+        let anim = setInterval(() => {
+            timeStep += FPS;
+            if (timeStep > titleAnimLen) {
+                clearInterval(anim);
+                window.location.href = "./about.html";
+            }
+            let animStep = (-Math.cos(timeStep / titleAnimLen * Math.PI) + 1)/2;
+            console.log(`${2/3 * animStep}vh`);
+            $("#about-bg").css({"height": `${200/3 * animStep}vh`, "margin-bottom": `${20 * animStep}px`});
+        }, FPS);
+    }
+
+    let anim = setInterval(() => {
+        let titleAnimLen = 300;
+        timeStep += FPS;
+        if (timeStep > titleAnimLen) {
+            clearInterval(anim);
+            setTimeout(anim2, 500);
+        }
+        let animStep = (-Math.cos(timeStep / titleAnimLen * Math.PI) + 1)/2;
+        $("#title").css("height", currTitleHeight * (1-animStep) + "px");
+      }, FPS);
+    
+}
+
+async function animProjects() {
+
+}
+
+const underscoreLengths = {
+    "about.html": 10.5,
+    "projects.html": 15.2
+}
+
+const underscoreLefts = {
+    "about.html": 15,
+    "projects.html": 29.7
+}
+
+const animFuncs = {
+    "about.html": animAbout,
+    "projects.html": animProjects
+}
+
+const currLeft = 0;
+const currLength = 10.5;
+
+async function runAnim(to) {
+    let from = $("#underline");
+    let animLenSec = 250;
+    var timeStep = 0;
+  	let toLength = underscoreLengths[`${to.attr("href")}`];
+  	let toLeft = underscoreLefts[`${to.attr("href")}`];
+
+  	let anim = setInterval(function () {
+        timeStep += 10;
+        if (timeStep > animLenSec) {
+            clearInterval(anim);
+            animFuncs[to.attr("href")]();
+        }
+        let animStep = (-Math.cos(timeStep / animLenSec * Math.PI) + 1)/2;
+        from.css({"margin-left": (currLeft * (1-animStep) + toLeft * animStep) + "%", "width": (currLength * (1-animStep) + toLength * animStep) + "%"})
+    }, 10);
+}
+
 $(document).ready(function() {
     particlesJS.load('particle-wrapper', 'json/particles.json', function() {
         console.log('callback - particles.js config loaded');
     });
 
     setSheet();
+
+    $(".page").on('click', function() {
+        runAnim($(this));
+    });
 });

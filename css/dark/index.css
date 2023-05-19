@@ -17,3 +17,11 @@ body {
 #theme-switch svg {
     fill: #fff;
 }
+
+#underline {
+    background-color: #fff;
+}
+
+#about-bg {
+    background-color: #242424;
+}

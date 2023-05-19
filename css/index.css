@@ -1,3 +1,9 @@
+:root {
+    --title-size-large: 75pt;
+    --subtitle-size-large: 17pt;
+    --title-size-small: 40pt;
+}
+
 @font-face {
     font-family: Koldby;
     src: url("../font/Koldby.otf") format("opentype");
@@ -24,15 +30,22 @@ body {
     margin: 0; padding: 0; border: 0;
     display: flex;
     flex-direction: column;
+    align-self: center;
 }
 
 @media screen and (min-width: 501px) {
     #title p {
-        --font-size: 75pt;
+        font-size: var(--title-size-large);
+        line-height: calc(var(--title-size-large) * 0.8);
     }
 
-    #pages p, a {
-        --font-size: 17pt;
+    #title {
+        height: calc(var(--title-size-large) * 0.8);
+    }
+
+    #pages span {
+        font-size: var(--subtitle-size-large);
+        line-height: calc(var(--subtitle-size-large) * 0.8);
     }
 
     #pages {
@@ -50,19 +63,36 @@ body {
 
 @media screen and (max-width: 500px) {
     #title p {
-        --font-size: 40pt;
+        font-size: var(--title-size-small);
+        line-height: calc(var(--title-size-small) * 0.8);
+    }
+
+    #title {
+        height: calc(var(--title-size-small) * 0.8);
     }
 
     #subtitle {
+        display: none !important;
+    }
+
+    #theme-switch {
+        display: none !important;
+    }
+
+    #underline {
         display: none !important;
     }
 }
 
 #title p {
     margin: 0;
-    font-size: var(--font-size);
-    line-height: calc(var(--font-size) * 0.8);
     font-family: Koldby;
+}
+
+#title {
+    display: flex;
+    overflow: hidden;
+    align-items: center;
 }
 
 #subtitle {
@@ -84,10 +114,8 @@ body {
     justify-content: center;
 }
 
-#pages span, a {
+#pages span {
     margin: 0; padding: 0; border: 0;
-    font-size: var(--font-size);
-    line-height: calc(var(--font-size) * 0.8);
     text-decoration: none;
 }
 
@@ -99,8 +127,9 @@ body {
 }
 
 #theme-switch {
-    display: flex;
-    justify-content: center;
+    position: absolute;
+    right: 25px;
+    top: 25px;
     margin-top: 5px;
 }
 
@@ -108,4 +137,22 @@ body {
     cursor: pointer;
     height: 100%;
     width: auto;
+}
+
+#underline {
+    margin-top: 0px;
+    height: 2px;
+    width: 10.5%;
+    margin-left: 0%;
+}
+
+#about-bg {
+    display: none;
+    border-radius: 40px;
+    width: 50vw;
+}
+
+#middle {
+    display: flex;
+    flex-direction: column;
 }
