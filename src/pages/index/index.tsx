@@ -35,10 +35,10 @@ export default function Index(): ReactElement {
                         </p>
                     </div>
                     <div className={styles.middleLinksSocials}>
-                        <a href="https://twitter.com/meluwudy"><img src="/assets/svg/twitter.svg" alt="Twitter" /></a>
-                        <a href="https://youtube.com/@melodysm"><img src="/assets/svg/youtube.svg" alt="Youtube" /></a>
-                        <a href="https://github.com/melowody"><img src="/assets/svg/github.svg" alt="Github" /></a>
-                        <a href="https://mk.moth.zone/@melody"><img src="/assets/svg/activitypub.svg" alt="AcitivityPub" /></a>
+                        <a href="https://twitter.com/meluwudy"><img src="/assets/img/svg/twitter.svg" alt="Twitter" /></a>
+                        <a href="https://youtube.com/@melodysm"><img src="/assets/img/svg/youtube.svg" alt="Youtube" /></a>
+                        <a href="https://github.com/melowody"><img src="/assets/img/svg/github.svg" alt="Github" /></a>
+                        <a href="https://mk.moth.zone/@melody"><img src="/assets/img/svg/activitypub.svg" alt="AcitivityPub" /></a>
                     </div>
                 </div>
             </div>

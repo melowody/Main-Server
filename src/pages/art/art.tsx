@@ -69,7 +69,7 @@ function Project() {
         </div>
         <div className={styles.contentOverlay} style={{display: visible ? "flex" : "none"}}>
             <img className={styles.contentOverlayImage} src={`${IMAGE_PATH}${current.image.name}`} alt={current.name}/>
-            <img className={styles.contentOverlayClose} onClick={hideOverlay} src="/assets/svg/close.svg" alt="Close"/>
+            <img className={styles.contentOverlayClose} onClick={hideOverlay} src="/assets/img/svg/close.svg" alt="Close"/>
         </div>
     </>
 }
