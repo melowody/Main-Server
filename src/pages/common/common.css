@@ -1,0 +1,181 @@
+@font-face {
+    font-family: Monolith;
+    src: url("/public/assets/fonts/Monolith.otf") format("opentype");
+}
+
+@font-face {
+    font-family: Koldby;
+    src: url("/public/assets/fonts/Koldby.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "KoPub Batang";
+    src: url("/public/assets/fonts/KoPubBatang-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Inria Serif";
+    src: url("/public/assets/fonts/InriaSerif-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Distopia Light";
+    src: url("/public/assets/fonts/Distopia Light.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "Khula Light";
+    src: url("/public/assets/fonts/Khula-Light.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Khula SemiBold";
+    src: url("/public/assets/fonts/Khula-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Khula Regular";
+    src: url("/public/assets/fonts/Khula-Regular.ttf") format("truetype");
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    overflow: hidden;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+li {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+#content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#content-navbar {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 18.75vw;
+    height: 100%;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+#particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+#content-navbar-links {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: min-content;
+    z-index: 100;
+}
+
+#content-navbar-links-title {
+    margin-top: 5.5555555vh;
+    font-family: "Inria Serif", serif;
+    font-weight: normal;
+    font-size: 2.5vw;
+    white-space: nowrap;
+}
+
+#content-navbar-links-title a {
+    color: #000000;
+}
+
+#content-navbar-links-links {
+    padding-top: 60px;
+    width: 100%;
+}
+
+#content-navbar-links-links p {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+#content-navbar-links-links a {
+    font-family: "Khula Light", sans-serif;
+    text-decoration: none;
+    font-size: 48px;
+    font-weight: 50;
+    color: rgba(0, 0, 0, 25%);
+    line-height: .9;
+}
+
+#content-navbar-links-links a.content-navbar-links-selected {
+    color: black;
+    padding-left: 1.5vw;
+}
+
+#content-navbar-separator {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#content-navbar-separator-top-gradient {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 16.66666666vh;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 100%) 50%, rgba(255, 255, 255, 0%));
+    z-index: 50;
+}
+
+#content-navbar-separator-bottom-gradient {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 16.66666666vh;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0%), rgba(255, 255, 255, 100%) 50%);
+    z-index: 50;
+}
+
+#content-navbar-separator-separator {
+    position: absolute;
+    z-index: 25;
+    height: 100%;
+    width: 0;
+    right: 0;
+    border: 1px solid black;
+}
+
+#content-body {
+    position: absolute;
+    right: 0;
+    width: 81.25vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
