@@ -1,9 +1,10 @@
-import {type ReactElement} from "react";
+import {type ReactElement, useState} from "react";
 import {useParticles} from "../common/common.ts";
 import styles from "./index.module.css";
 
 export default function Index(): ReactElement {
     useParticles();
+    const [isHouse] = useState(() => (Math.floor(Math.random() * 20)) == 0)
     return <div className={styles.indexPage}>
         <div className={styles.indexParticles} id="particles"></div>
         <div className={styles.container}>
@@ -20,12 +21,12 @@ export default function Index(): ReactElement {
             </div>
             <div className={styles.middle}>
                 <div className={styles.middleTitle}>
-                    <p>mel's home</p>
+                    <p>mel's {isHouse ? (<span style={{color: "blue"}}>house</span>) : ("home")}</p>
                 </div>
                 <div className={styles.middleLinks}>
                     <div className={styles.middleLinksPages}>
                         <p>
-                            <a href="#" id="middle-links-pages-home" style={{textDecoration: "underline"}}>home</a>
+                            <a href="#" id="middle-links-pages-home" style={{textDecoration: "underline"}}>{isHouse ? (<span style={{color: "blue"}}>house</span>) : ("home")}</a>
                             -
                             <a href="/about" id="middle-links-pages-about">about</a>
                             -
