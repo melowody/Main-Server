@@ -1,6 +1,7 @@
 import {type ReactElement, useEffect, useState} from "react";
-import {useParticles} from "../common/common.ts";
+import {useParticles} from "../common/common.tsx";
 import styles from "./projects.module.css";
+import {Subpage} from "../common/subpage.tsx";
 
 type Data = {
     name: string;
@@ -45,7 +46,6 @@ function Project() {
     const nextPage = () => setSelected((s) => mod(s + 1, data.length));
 
     return <div id="content-body">
-        <p className={styles.contentBodyTitle}>projects</p>
         <img className={styles.contentBodyBodyImage} src={`${IMAGE_PATH}${current.image.name}`} alt={current.name} style={{objectPosition: current.image.position ?? undefined}}/>
         <p className={styles.contentBodyBodyTitle}>{current.name}</p>
         <div className={styles.contentBodyBodySeparator}></div>
@@ -62,26 +62,5 @@ function Project() {
 
 export default function Projects(): ReactElement {
     useParticles();
-    return <div id="content">
-        <div id="content-navbar">
-            <div id="particles"></div>
-            <div id="content-navbar-links">
-                <div id="content-navbar-links-title">
-                    <a href="/">mel's home</a>
-                </div>
-                <div id="content-navbar-links-links">
-                    <p><a href="/about">about</a></p>
-                    <p><a href="/blog">blog</a></p>
-                    <p><a href="#" className="content-navbar-links-selected">projects</a></p>
-                    <p><a href="/art">art</a></p>
-                </div>
-            </div>
-            <div id="content-navbar-separator">
-                <div id="content-navbar-separator-top-gradient"></div>
-                <div id="content-navbar-separator-bottom-gradient"></div>
-                <div id="content-navbar-separator-separator"></div>
-            </div>
-        </div>
-        <Project />
-    </div>;
+    return <Subpage component={<Project />} index={2} title={"projects"} />;
 }

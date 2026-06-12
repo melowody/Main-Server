@@ -51,6 +51,8 @@
     font-family: "KoPub Batang", sans-serif;
     font-size: 48px;
     cursor: pointer;
+    line-height: 100vh;
+    height: 100vh;
 }
 
 .contentBodyBodyLeft {

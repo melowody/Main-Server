@@ -1,5 +1,5 @@
 import {type ReactElement, useState} from "react";
-import {useParticles} from "../common/common.ts";
+import {useParticles} from "../common/common.tsx";
 import styles from "./index.module.css";
 
 export default function Index(): ReactElement {

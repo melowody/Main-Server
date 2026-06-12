@@ -172,10 +172,22 @@ li {
 #content-body {
     position: absolute;
     right: 0;
+    top: 0;
     width: 81.25vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+}
+
+#content-body-title p {
+    font-family: "Khula SemiBold", sans-serif;
+    font-size: 2.5vw;
+    color: black;
+    margin: 0;
+}
+
+#content-body-title {
+    margin-top: 5.55555555vh;
 }

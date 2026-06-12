@@ -1,0 +1,41 @@
+.contentMarkdown {
+    width: 96%;
+    height: 100%;
+    overflow-y: auto;
+    font-family: "Khula Light", sans-serif;
+    font-size: 1.75vh;
+    line-height: 1.25;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.contentMarkdown h1, .contentMarkdown h2, .contentMarkdown h3, .contentMarkdown h4, .contentMarkdown h5, .contentMarkdown h6 {
+    font-family: "Khula SemiBold", sans-serif;
+}
+
+.contentMarkdown ul {
+    list-style-type: disc !important;
+    padding-left: 2.5rem;
+}
+
+.contentMarkdown li {
+    display: list-item;
+}
+
+.contentMarkdown pre:has(code) {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    width: 100%;
+}
+
+.contentMarkdown hr {
+    width: 99%;
+}
+
+.contentMarkdown a {
+    color: orange;
+}
+
+.contentMarkdown a:visited {
+    color: gray;
+}

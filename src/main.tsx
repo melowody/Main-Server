@@ -8,6 +8,7 @@ import Blog from "./pages/blog/blog.tsx";
 import Projects from "./pages/projects/projects.tsx";
 import "./pages/common/common.css";
 import Art from "./pages/art/art.tsx";
+import Test from "./pages/blog/post.tsx";
 
 export default function App(): ReactElement {
   return (
@@ -18,6 +19,7 @@ export default function App(): ReactElement {
         <Route path="/blog" element={<Blog />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/art" element={<Art />} />
+        <Route path="/blogs/:id" element={<Test />} />
       </Routes>
     </BrowserRouter>
   );

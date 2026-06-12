@@ -1,6 +1,90 @@
+.contentBodyTitle p {
+    font-family: "Khula SemiBold", sans-serif;
+    font-size: 48px;
+    color: black;
+    margin: 0;
+}
+
+.contentBodyTitle {
+    z-index: 100;
+}
+
 .contentBodyText p {
     font-family: "Khula SemiBold", sans-serif;
     font-size: 48px;
     color: black;
     margin: 0;
+}
+
+.contentBodyContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 95%;
+    height: 86.66666vh;
+    overflow: auto;
+    overflow-x: hidden;
+    padding-left: 5%;
+}
+
+.contentBodyEntry {
+    width: 95%;
+    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    border-color: rgba(0, 0, 0, 0.05);
+    border-style: solid;
+    border-width: 1px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.contentBodyEntryTitle {
+    font-family: "Khula Light", sans-serif;
+    font-size: 32px;
+    font-weight: lighter;
+    color: rgba(0, 0, 0, 0.33);
+}
+
+.contentBodyEntryTitle span {
+    font-family: "Khula SemiBold", sans-serif;
+    font-size: 32px;
+    font-weight: bolder;
+    color: black;
+}
+
+.contentBodyEntry p {
+    font-family: "Khula Light", sans-serif;
+    font-size: 16px;
+    font-weight: lighter;
+    margin: 0;
+}
+
+.contentBodyEntry * {
+    pointer-events: none;
+}
+
+.contentBodyTopGradient, .contentBodyBottomGradient {
+    position: absolute;
+    left: 0;
+    width: 99%;
+    height: 16.6666666666vh;
+    z-index: 50;
+    pointer-events: none;
+}
+
+.contentBodyTopGradient {
+    top: 0;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 100%) 50%, rgba(255, 255, 255, 0%));
+}
+
+.contentBodyBottomGradient {
+    bottom: 0;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0%), rgba(255, 255, 255, 100%) 50%);
+}
+
+.contentBodySpacer {
+    width: 100%;
+    min-height: 5%;
 }
