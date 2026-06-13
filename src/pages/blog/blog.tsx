@@ -16,14 +16,14 @@ export default function Blog(): ReactElement {
         fetch("https://directus.meluhdy.dev/items/blogs")
             .then(res => res.json())
             .then(data => {
-                setData(data.data.map((post) => {console.log(post); return {
+                setData(data.data.map((post: any) => {console.log(post); return {
                     id: post.id,
                     title: post.title,
                     slug: post.slug,
                     date: new Date(post.date),
                     description: post.description,
                     post: post.post
-                };}).sort((a, b) => a.date - b.date));
+                };}).sort((a: any, b: any) => a.date - b.date));
             })
     }, []);
 

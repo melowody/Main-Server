@@ -37,7 +37,7 @@ function Project() {
                         artist_link: work.artist_link
                     }
                     return n;
-                }).sort((a, b) => (a.date.getTime() - b.date.getTime())));
+                }).sort((a: any, b: any) => (a.date.getTime() - b.date.getTime())));
             })
     }, []);
 
