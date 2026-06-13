@@ -6,14 +6,7 @@ import Markdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import styles from "./post.module.css";
-
-type Post = {
-    id: string;
-    name: string;
-    file: string;
-    desc: string;
-    date: number;
-}
+import type {Post} from "./common.ts";
 
 export default function Test(): ReactElement {
     useParticles();
@@ -22,26 +15,16 @@ export default function Test(): ReactElement {
 
     const [post, setPost] = useState<Post | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const [md, setMd] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch("/assets/json/blogs.json")
+        fetch(`https://directus.meluhdy.dev/items/blogs?filter[slug][_eq]=${id}`)
             .then(res => res.json())
-            .then((data: Post[]) => {
-                const post = data.find(post => post.id === id);
+            .then((data: any) => {
+                const post = data.data[0];
                 setPost(post || null);
                 setLoading(false);
             })
     }, [id]);
-
-    useEffect(() => {
-
-        if (!post?.file) return;
-
-        fetch(`/assets/md/blog/${post?.file}`)
-            .then(res => res.text())
-            .then(text => setMd(text));
-    }, [post]);
 
     if (loading) return <Subpage component={<div className="loading">Loading post...</div>} index={-1} />;
 
@@ -69,8 +52,8 @@ export default function Test(): ReactElement {
                             )
                         }
                     }}
-                >{md}</Markdown>
+                >{post!.post}</Markdown>
             </div>
         </>
-    } index={-1} title={post!.name} />;
+    } index={-1} title={post!.title} />;
 }

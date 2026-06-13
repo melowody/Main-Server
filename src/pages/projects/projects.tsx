@@ -3,40 +3,42 @@ import {useParticles} from "../common/common.tsx";
 import styles from "./projects.module.css";
 import {Subpage} from "../common/subpage.tsx";
 
-type Data = {
-    name: string;
+type Project = {
+    id: number;
+    title: string;
     description: string;
+    image: string;
+    position: string | null;
     links: {
-        name: string;
-        link: string;
-        dont_link?: boolean;
+        id: number;
+        projects_id: number;
+        collection: string;
+        item: {
+            id: number;
+            name: string;
+            link: string;
+            link_to: boolean;
+        };
     }[];
-    image: {
-        name: string;
-        position?: string;
-    }
-}
+};
 
 function mod(n: number, m: number) {
     return ((n % m) + m) % m;
 }
 
 function Project() {
-    const IMAGE_PATH = "/assets/img/png/projects/";
-
-    const [data, setData] = useState<Data[]>([]);
+    const [data, setData] = useState<Project[]>([]);
     const [selected, setSelected] = useState(0);
 
     useEffect(() => {
-        fetch("/assets/json/projects.json")
+        fetch("https://directus.meluhdy.dev/items/projects?fields=*,links.*,links.item.*")
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-                setData(data);
+                setData(data.data);
             })
     }, []);
 
-    const current: Data = data[selected];
+    const current: Project = data[selected];
 
     if (!current) {
         return <div id="content-body">Loading! :3</div>;
@@ -45,19 +47,19 @@ function Project() {
     const prevPage = () => setSelected((s) => mod(s - 1, data.length));
     const nextPage = () => setSelected((s) => mod(s + 1, data.length));
 
-    return <div id="content-body">
-        <img className={styles.contentBodyBodyImage} src={`${IMAGE_PATH}${current.image.name}`} alt={current.name} style={{objectPosition: current.image.position ?? undefined}}/>
-        <p className={styles.contentBodyBodyTitle}>{current.name}</p>
+    return <>
+        <img className={styles.contentBodyBodyImage} src={`https://directus.meluhdy.dev/assets/${current.image}`} alt={current.title} style={{objectPosition: current.position ?? undefined}}/>
+        <p className={styles.contentBodyBodyTitle}>{current.title}</p>
         <div className={styles.contentBodyBodySeparator}></div>
         <p className={styles.contentBodyBodyLeft} onClick={prevPage}>&lt;</p>
         <p className={styles.contentBodyBodyRight} onClick={nextPage}>&gt;</p>
         <div className={styles.contentBodyBodyDesc}>
             <p>{current.description}</p><br /><br />
             {current.links.map((link) => (
-                <div key={link.name}><span style={{fontWeight: "bold"}}>{link.name}: </span>{link.dont_link ? (link.link) : (<a href={link.link}>{link.link}</a>)}</div>
+                <div key={link.item.name}><span style={{fontWeight: "bold"}}>{link.item.name}: </span>{!link.item.link_to ? (link.item.link) : (<a href={link.item.link}>{link.item.link}</a>)}</div>
             ))}
         </div>
-    </div>
+    </>
 }
 
 export default function Projects(): ReactElement {

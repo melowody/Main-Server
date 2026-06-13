@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@directus/sdk": "^22.0.0",
     "jquery": "^4.0.0",
     "marked": "^18.0.5",
     "react": "^19.2.6",

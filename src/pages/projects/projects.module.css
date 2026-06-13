@@ -32,13 +32,15 @@
     border-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 100%) 10%, rgba(0, 0, 0, 100%) 90%, rgba(0, 0, 0, 0) 100%) 1;
     border-width: 1px;
     border-style: solid;
-    position: absolute;
+    position:absolute;
+    top: 50%;
 }
 
 .contentBodyBodyDesc {
     position: absolute;
     white-space: pre-line;
     top: 50%;
+    width: 80%;
 }
 
 .contentBodyBodyDesc p, .contentBodyBodyDesc div {
