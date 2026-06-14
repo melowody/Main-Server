@@ -9,6 +9,7 @@ import Projects from "./pages/projects/projects.tsx";
 import "./pages/common/common.css";
 import Art from "./pages/art/art.tsx";
 import Test from "./pages/blog/post.tsx";
+import Particles from "./pages/particles.tsx";
 
 export default function App(): ReactElement {
   return (
@@ -20,6 +21,7 @@ export default function App(): ReactElement {
         <Route path="/projects" element={<Projects />} />
         <Route path="/art" element={<Art />} />
         <Route path="/blogs/:id" element={<Test />} />
+        <Route path="/particles" element={<Particles />} />
       </Routes>
     </BrowserRouter>
   );
