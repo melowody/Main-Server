@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import fs from "fs";
+import {ImapFlow} from "imapflow";
 
 const PORT = 7566;
 const STATE_FILE = "./state.json"
@@ -33,6 +34,24 @@ app.use(express.json());
 
 let authCookie: string;
 let userId: string;
+let loaded: boolean = false;
+
+let resolveOtp: (() => void) | null = null;
+
+const otpReady = new Promise<void>((resolve) => {
+    resolveOtp = resolve;
+});
+
+const latestOtp: {code: string, timeUpdated: Date, timeUsed: Date} = {code: "000000", timeUpdated: new Date(), timeUsed: new Date()}
+const imapClient = new ImapFlow({
+    host: process.env.MAIL_SERVER_URL!,
+    port: Number(process.env.MAIL_SERVER_PORT!),
+    secure: true,
+    auth: {
+        user: process.env.MAIL_SERVER_USER!,
+        pass: process.env.MAIL_SERVER_PASSWORD!
+    }
+})
 
 async function getAuthCookie(): Promise<{cookie: string | undefined, body: any}> {
     const auth = Buffer.from(`${encodeURIComponent(process.env.VRCHAT_EMAIL!)}:${encodeURIComponent(process.env.VRCHAT_PASSWORD!)}`).toString('base64');
@@ -69,36 +88,20 @@ async function setUserId() {
     userId = user.id;
 }
 
-app.post("/api/vrchat/login", async (req, res) => {
-    const { cookie, body } = await getAuthCookie();
+async function verify2fa(): Promise<boolean> {
 
-    authCookie = cookie!;
+    console.log("Verifying...");
 
-    if (body.requiresTwoFactorAuth?.includes("totp")) {
-        return res.json({
-            requires2FA: true,
-            type: "totp"
-        });
-    }
+    const timeout = new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 30_000));
+    const ready = otpReady.then(() => true);
+    const ok = await Promise.race([ready, timeout]);
+    if (!ok) return false;
 
-    if (body.requiresTwoFactorAuth?.includes("emailOtp")) {
-        return res.json({
-            requires2FA: true,
-            type: "email"
-        });
-    }
+    console.log("New:", latestOtp.code);
 
-    await setUserId();
-
-    res.json({
-        requires2FA: false
-    });
-})
-
-app.post("/api/vrchat/2fa", async (req, res) => {
     const response = await fetch("https://api.vrchat.cloud/api/1/auth/twofactorauth/emailotp/verify", {
         method: 'POST',
-        body: JSON.stringify({"code": req.body.code}),
+        body: JSON.stringify({"code": latestOtp.code}),
         headers: {
             "User-Agent": "Mozilla/5.0 (platform; rv:gecko-version) Gecko/gecko-trail Firefox/firefox-version",
             "Content-Type": "application/json",
@@ -106,12 +109,41 @@ app.post("/api/vrchat/2fa", async (req, res) => {
         }
     });
     if (response.status !== 200) {
-        return res.json({success: false});
+        return false;
+    }
+
+    await setUserId();
+    latestOtp.timeUsed = new Date();
+    loaded = true;
+    return true;
+}
+
+app.post("/api/vrchat/login", async (req, res) => {
+    if (loaded) {
+        return res.json({success: true});
+    }
+    const { cookie, body } = await getAuthCookie();
+
+    authCookie = cookie!;
+
+    if (body.requiresTwoFactorAuth?.includes("totp")) {
+        return res.json({
+            success: await verify2fa()
+        });
+    }
+
+    if (body.requiresTwoFactorAuth?.includes("emailOtp")) {
+        return res.json({
+            success: await verify2fa()
+        });
     }
 
     await setUserId();
 
-    res.json({"success": response.status == 200});
+    loaded = true;
+    res.json({
+        success: true
+    });
 })
 
 async function updateAvatar(avatarId: string) {
@@ -134,6 +166,21 @@ app.post("/api/vrchat/avatar", async (req, res) => {
     res.json({"success": response.status == 200});
 });
 
+async function sendShock() {
+    /*if (!client) {
+        client = createClient({
+            socket: {
+                host: "redis.pishock.com",
+                port: 6379
+            },
+            username: `user${process.env.PISHOCK_USERID}`,
+            password: process.env.PISHOCK_TOKEN
+        });
+        client.connect();
+        console.log("Pishock Connected");
+    }*/
+}
+
 async function syncAvatar() {
     try {
         if (!state.lastAvatarId || !userId || !authCookie) return;
@@ -150,21 +197,11 @@ async function syncAvatar() {
         const data = await response.json();
         const id: string = data.id;
         if (id != state.lastAvatarId) {
-            fetch("https://do.pishock.com/api/apioperate", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "Username": process.env.PISHOCK_USERNAME,
-                    "Name": process.env.PISHOCK_NAME,
-                    "Code": process.env.PISHOCK_CODE,
-                    "Apikey": process.env.PISHOCK_APIKEY,
-                    "Intensity": 20,
-                    "Duration": 1,
-                    "Op": 0
-                })
-            })
+            try {
+                await sendShock();
+            } catch (err) {
+                console.error(err);
+            }
             await updateAvatar(state.lastAvatarId);
         }
     } catch (err) {
@@ -185,7 +222,50 @@ async function syncLoop() {
     setTimeout(syncLoop, interval);
 }
 
+async function otpListener() {
+    await imapClient.connect();
+    const mailbox = await imapClient.mailboxOpen("INBOX");
+    let latestUid = mailbox.exists;
+
+    imapClient.on("exists", async () => {
+        console.log("Got email");
+
+        const lock = await imapClient.getMailboxLock("INBOX");
+        try {
+            const messages = imapClient.fetch(`${latestUid + 1}:*`, {
+                uid: true,
+                envelope: true,
+                bodyParts: ["1"]
+            });
+
+            for await (const msg of messages) {
+                const body = msg.bodyParts?.get("1")?.toString("utf8") ?? "";
+                const otp = body.match(/\b\d{6}\b/)?.[0];
+
+                console.log("UID:", msg.uid);
+                console.log("Body:", body);
+
+                if (otp && msg.uid > latestUid) {
+                    latestUid = msg.uid;
+                    latestOtp.code = otp;
+                    latestOtp.timeUpdated = new Date();
+
+                    console.log("New:", otp);
+                    resolveOtp?.();
+                }
+            }
+        } finally {
+            lock.release();
+        }
+    });
+
+    await imapClient.idle();
+}
+
 void syncLoop();
+otpListener().then(_ => {
+    latestOtp.timeUsed = new Date();
+});
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}!`);

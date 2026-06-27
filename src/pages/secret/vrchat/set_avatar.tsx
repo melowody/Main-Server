@@ -27,15 +27,8 @@ export function SetAvatar() {
             });
             
             const data = await login.json();
-            if (data.requires2FA) {
-                const code = window.prompt("2FA Code: ")!;
-                await fetch("/api/vrchat/2fa", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({"code": code})
-                });
+            if (!data.success) {
+                alert("Could not load 2FA!");
             }
             
             setLoaded(true);

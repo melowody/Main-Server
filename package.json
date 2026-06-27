@@ -13,22 +13,26 @@
   },
   "dependencies": {
     "@directus/sdk": "^22.0.0",
+    "axios": "^1.18.1",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "imapflow": "^1.4.3",
     "jquery": "^4.0.0",
     "marked": "^18.0.5",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.17.0",
-    "react-syntax-highlighter": "^16.1.1"
+    "react-syntax-highlighter": "^16.1.1",
+    "redis": "^6.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@rollup/plugin-inject": "^5.0.5",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/imapflow": "^1.0.23",
     "@types/jquery": "^4.0.1",
     "@types/marked": "^5.0.2",
     "@types/node": "^24.13.2",
@@ -45,5 +49,8 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.12"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true
   }
 }
