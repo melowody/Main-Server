@@ -25,3 +25,4 @@ dist-ssr
 
 # Website stuff
 state.json
+./.env

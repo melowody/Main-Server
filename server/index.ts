@@ -47,6 +47,10 @@ async function getAuthCookie(): Promise<{cookie: string | undefined, body: any}>
     });
 
     const body = await response.json();
+    const headers = response.headers;
+
+    console.log(body);
+    console.log(headers);
 
     const cookie = response.headers.get("set-cookie")!.match(/auth=([^;]+)/)?.[1];
 
@@ -146,6 +150,21 @@ async function syncAvatar() {
         const data = await response.json();
         const id: string = data.id;
         if (id != state.lastAvatarId) {
+            fetch("https://do.pishock.com/api/apioperate", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "Username": process.env.PISHOCK_USERNAME,
+                    "Name": process.env.PISHOCK_NAME,
+                    "Code": process.env.PISHOCK_CODE,
+                    "Apikey": process.env.PISHOCK_APIKEY,
+                    "Intensity": 20,
+                    "Duration": 1,
+                    "Op": 0
+                })
+            })
             await updateAvatar(state.lastAvatarId);
         }
     } catch (err) {
@@ -153,7 +172,20 @@ async function syncAvatar() {
     }
 }
 
-setInterval(syncAvatar, 15 * 1000);
+let interval = 2000;
+
+async function syncLoop() {
+    try {
+        await syncAvatar();
+        interval = 2000;
+    } catch {
+        interval = Math.min(interval * 2, 60000);
+    }
+
+    setTimeout(syncLoop, interval);
+}
+
+void syncLoop();
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}!`);
